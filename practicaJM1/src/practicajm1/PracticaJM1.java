@@ -1,5 +1,8 @@
 package practicajm1;
 
+import java.io.*;
+import java.util.*;
+
 /**
  *
  * @author Daniel Marcos, Alvaro Gomez
