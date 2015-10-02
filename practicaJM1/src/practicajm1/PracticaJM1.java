@@ -9,6 +9,7 @@ import java.util.*;
  */
 public class PracticaJM1 {
 
+    static int nUsuarios = 6;
     /**
      * @param args the command line arguments
      */
