@@ -11,7 +11,7 @@ import java.util.*;
 public class PracticaJM1 {
 
     // Variable global con el numero de usuarios
-    static int nUsuarios = 6;
+    static int nUsuarios = 5;
 
     /**
      * @param args the command line arguments
