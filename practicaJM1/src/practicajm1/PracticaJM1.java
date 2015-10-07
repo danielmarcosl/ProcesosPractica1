@@ -38,7 +38,7 @@ public class PracticaJM1 {
 
             // Bucle para imprimir por pantalla el fichero de cada usuario
             for (int j = 0; j < nUsuarios; j++) {
-                BufferedReader leer = new BufferedReader(new FileReader("D:\\Libraries\\Documents\\Usuarios\\usuario" + (j + 1) + ".txt"));
+                BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuario" + (j + 1) + ".txt"));
                 String linea = null;
 
                 System.out.println("El Usuario" + (j + 1) + " contiene en su carpeta los siguientes archivos:");
