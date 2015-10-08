@@ -1,7 +1,10 @@
 package practicajm1;
 
-import java.io.*;
-import java.util.*;
+import java.io.InterruptedIOException;
+import java.io.IOException;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 /**
  *
