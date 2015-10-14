@@ -30,7 +30,11 @@ public class PracticaJM1 {
 
             pb.redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuario" + (i + 1) + ".txt"));
             pb.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\error.txt"));
-            proceso[i] = pb.start();
+            try {
+                proceso[i] = pb.start();
+            } catch (IOException e) {
+                System.out.println("Error: " + e);
+            }
         }
 
         // Bucle para esperar que acaben los 6 procesos creados
