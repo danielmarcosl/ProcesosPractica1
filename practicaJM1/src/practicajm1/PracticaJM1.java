@@ -9,7 +9,7 @@ import java.io.FileReader;
 /**
  *
  * @author Daniel Marcos, Alvaro Gomez
- * @version 1
+ * @version 1.2 14/10/2015
  */
 public class PracticaJM1 {
 
