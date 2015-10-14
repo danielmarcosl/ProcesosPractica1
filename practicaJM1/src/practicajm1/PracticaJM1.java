@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import practicajm1.Metodos;
+
 /**
  *
  * @author Daniel Marcos, Alvaro Gomez
@@ -14,13 +16,16 @@ import java.io.FileReader;
 public class PracticaJM1 {
 
     // Variable global con el numero de usuarios
-    static int nUsuarios = 5;
+    static int nUsuarios;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
+        // Llamos al metodo para ver los uusarios
+        Metodos.leerUsuarios();
+        
         // Creamos un array de procesos
         Process[] proceso = new Process[nUsuarios]; // Array de procesos
 
