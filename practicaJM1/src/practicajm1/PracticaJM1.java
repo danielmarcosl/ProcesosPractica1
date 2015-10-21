@@ -1,10 +1,7 @@
 package practicajm1;
 
-import java.io.InterruptedIOException;
 import java.io.IOException;
-import java.io.File;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import practicajm1.Metodos;
@@ -17,19 +14,28 @@ import practicajm1.Metodos;
 public class PracticaJM1 {
 
     // Variable global con el numero de usuarios
-    static int nUsuarios;
+    static int nUsuarios = 0;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
-        // Llamos al metodo para ver los uusarios
-        Metodos.leerUsuarios();
+        // Llamos al metodo para ver los usuarios
+        try {
+            Metodos.leerUsuarios();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        // Llamamos al metodo para contar los usuarios
+        try {
+            nUsuarios = Metodos.contarUsuarios();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Creamos un array de procesos
         ProcessBuilder[] proceso = new ProcessBuilder[nUsuarios]; // Array de procesos
-        Process p[] = null;
 
         // Bucle para crear los 6 procesos, cada uno guardará en un documento el contenido de la carpeta de cada usuario
         try {
@@ -38,33 +44,21 @@ public class PracticaJM1 {
             int count = 0;
 
             while ((user = leer.readLine()) != null) {
-                p[count] = Metodos.leerContenidoUsuarios(user, proceso[count]).start();
+                if (!(user.indexOf('.') >= 0)) {
+                    Metodos.leerContenidoUsuarios(user, proceso[count]);
+                }
                 count++;
             }
             leer.close();
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        }
-
-        // Bucle para esperar que acaben los 6 procesos creados
-        for (int i = 0; i < nUsuarios; i++) {
-            Metodos.esperarProcesos(p[i]);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Bucle para imprimir por pantalla el fichero de cada usuario
-        for (int j = 0; j < nUsuarios; j++) {
-            try {
-                BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuario" + (j + 1) + ".txt"));
-                String linea = null;
-
-                System.out.println("El Usuario" + (j + 1) + " contiene en su carpeta los siguientes archivos:");
-                while ((linea = leer.readLine()) != null) {
-                    System.out.println(linea);
-                }
-                leer.close();
-            } catch (IOException e) {
-                System.out.println("Error: " + e);
-            }
+        try {
+            Metodos.mostrarContenido();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
         }
     }
 }
