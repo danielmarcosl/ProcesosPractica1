@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import static practicajm1.PracticaJM1.nUsuarios;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Metodos {
         ProcessBuilder pb = new ProcessBuilder("CMD", "/C", "dir /b C:\\Users\\Alumnot\\Documents\\Usuarios");
 
         pb.redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt")); // Ubicacion de destino del resultado del comando
-        pb.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\errorusuarios.txt")); // Ubicacion de destino si ocurre algun error
+        //pb.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\errorusuarios.txt")); // Ubicacion de destino si ocurre algun error
 
         try {
             pb.start(); // Lanza el proceso
@@ -38,17 +39,25 @@ public class Metodos {
      *
      * @param nUsuario numero de hilo
      */
-    public static void leerContenidoUsuarios(String user, Process p) {
+    public static ProcessBuilder leerContenidoUsuarios(String user, ProcessBuilder p) {
 
         //Runtime.getRuntime().exec("C:\DoStuff.exe -arg1 -arg2");
         p = new ProcessBuilder("CMD", "/C", "dir /b C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user);
 
         p.redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user + ".txt"));
-        p.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\ERROR-" + user + ".txt"));
-        try {
-            p.start(); // Lanza el proceso
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
+        //p.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\ERROR-" + user + ".txt"));
+        return p;
+    }
+
+    public static void esperarProcesos(Process p) {
+        // Bucle para esperar que acaben los 6 procesos creados
+        for (int i = 0; i < nUsuarios; i++) {
+            try {
+                int rc;
+                rc = p.waitFor();
+            } catch (InterruptedException e) {
+                System.out.println("Error: " + e);
+            }
         }
     }
 }

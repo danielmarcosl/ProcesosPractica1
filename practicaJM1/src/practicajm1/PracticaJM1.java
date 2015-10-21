@@ -28,29 +28,27 @@ public class PracticaJM1 {
         Metodos.leerUsuarios();
 
         // Creamos un array de procesos
-        Process[] proceso = new Process[nUsuarios]; // Array de procesos
+        ProcessBuilder[] proceso = new ProcessBuilder[nUsuarios]; // Array de procesos
+        Process p[] = null;
 
         // Bucle para crear los 6 procesos, cada uno guardará en un documento el contenido de la carpeta de cada usuario
         try {
-            BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\errorusuarios.txt"));
+            BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
             String user = null;
             int count = 0;
 
             while ((user = leer.readLine()) != null) {
-                Metodos.leerContenidoUsuarios(proceso[count]);
+                p[count] = Metodos.leerContenidoUsuarios(user, proceso[count]).start();
                 count++;
             }
+            leer.close();
         } catch (IOException e) {
             System.out.println("Error: " + e);
         }
 
         // Bucle para esperar que acaben los 6 procesos creados
         for (int i = 0; i < nUsuarios; i++) {
-            try {
-                int rc = proceso[i].waitFor();
-            } catch (InterruptedException e) {
-                System.out.println("Error: " + e);
-            }   
+            Metodos.esperarProcesos(p[i]);
         }
 
         // Bucle para imprimir por pantalla el fichero de cada usuario
