@@ -58,7 +58,7 @@ public class PracticaJM1 {
         try {
             Metodos.mostrarContenido();
         } catch (IOException e) {
-            //System.out.println("Error: " + e);
+            System.out.println("Error: " + e);
         }
     }
 }
