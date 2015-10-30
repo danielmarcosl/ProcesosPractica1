@@ -23,7 +23,6 @@ public class Metodos {
         ProcessBuilder pb = new ProcessBuilder("CMD", "/C", "dir /b C:\\Users\\Alumnot\\Documents\\Usuarios");
 
         pb.redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt")); // Ubicacion de destino del resultado del comando
-        //pb.redirectError(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\errorusuarios.txt")); // Ubicacion de destino si ocurre algun error
 
         Process p = pb.start(); // Lanza el proceso
         p.waitFor(); // Espera a que acabe
