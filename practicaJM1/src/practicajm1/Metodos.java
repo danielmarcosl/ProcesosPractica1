@@ -40,7 +40,7 @@ public class Metodos {
         // Variable donde se almacenara cada linea del fichero
         String linea = null;
         // Contador de usuarios
-        int count = 0;
+        int count = 1;
 
         // Si hay un registro de un archivo, que lleve un punto y una extension, la ignoramos
         while ((linea = leer.readLine()) != null) {
