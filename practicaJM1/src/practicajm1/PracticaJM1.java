@@ -42,12 +42,12 @@ public class PracticaJM1 {
             BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
             String user = null;
             int count = 0;
-
-            while ((user = leer.readLine()) != null) {
+            
+            for (int i = 0; i < nUsuarios; i++) {
+                user = leer.readLine();
                 if (!(user.indexOf('.') >= 0)) {
                     Metodos.leerContenidoUsuarios(user, proceso[count]);
                 }
-                count++;
             }
             leer.close();
         } catch (Exception e) {
