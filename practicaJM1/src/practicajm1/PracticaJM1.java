@@ -1,13 +1,8 @@
 package practicajm1;
 
 import java.io.IOException;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import practicajm1.Metodos;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,68 +13,43 @@ public class PracticaJM1 {
 
     // Variable global con el numero de usuarios
     static int nUsuarios = 0;
+    // Ruta donde esta ubicada la carpeta que contiene los usuarios
+    static String ruta = "D:\\Libraries\\Documents\\Usuarios\\";
+    // ArrayList que contendra los nombres de usuario
+    static ArrayList<String> nombreUsuarios = new ArrayList<String>();
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, InterruptedException {
 
-        // Llamos al metodo para ver los usuarios
-        try {
-            Metodos.leerUsuarios();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Almacenamos los nombres de las carpetas de usuario en un fichero de texto
+        Metodos.leerUsuarios(ruta);
+
+        // Almacenamos los nombres de usuario en un ArrayList
+        Metodos.cogerNombres(ruta, nombreUsuarios);
+
+        // Contamos los usuarios
+        nUsuarios = nombreUsuarios.size();
+
+        // Creamos un array de Process
+        ProcessBuilder[] pb = new ProcessBuilder[nUsuarios];
+        Process[] p = new Process[nUsuarios];
+
+        // Bucle para crear los procesos
+        // Cada proceso creara un documento con el contenido de cada carpeta de usuario
+        for (int i = 0; i < nUsuarios; i++) {
+            pb[i] = new ProcessBuilder("CMD", "/C", "dir /s /b " + ruta + nombreUsuarios.get(i));
+            pb[i].redirectOutput(new File(ruta + nombreUsuarios.get(i) + ".txt"));
+            p[i] = pb[i].start();
         }
 
-        // Llamamos al metodo para contar los usuarios
-        try {
-            nUsuarios = Metodos.contarUsuarios();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Creamos un array de procesos en ProcessBuilder
-        ProcessBuilder[] proceso = new ProcessBuilder[nUsuarios]; // Array de procesos
-        // Creamos un array de Process para lanzarlos
-        Process[] proc = new Process[nUsuarios];
-
-        // Bucle para crear los 6 procesos, cada uno guardará en un documento el contenido de la carpeta de cada usuario
-        try {
-            BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
-            String user = null; // Nombre del usuario
-            int count = 0; // Contador para lanzar los procesos
-
-            for (int i = 0; i < nUsuarios; i++) {
-                user = leer.readLine();
-                if (!(user.indexOf('.') >= 0)) {
-                    // Creamos el proceso con el comando para recorrer la carpeta del usuario
-                    proceso[count] = new ProcessBuilder("CMD", "/C", "dir /s /b C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user);
-                    // Redireccionamos la salida del comando a un fichero de texto con el nombre del usuario
-                    proceso[count].redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user + ".txt"));
-                    // Lanzamos los procesos
-                    proc[count] = proceso[count].start();
-                    //proc[count].waitFor();
-                }
-            }
-
-            //Esperamos a que acaben los procesos lanzamos
-            for (int j = 0; j < nUsuarios; j++) {
-                proc[j].waitFor();
-            }
-            leer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Esperamos a que acaben los procesos
+        for (int i = 0; i < nUsuarios; i++) {
+            p[i].waitFor();
         }
 
-//        try {
-//            Metodos.limpiarFicheros();
-//        } catch (IOException ex) {
-//            Logger.getLogger(PracticaJM1.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        // Bucle para imprimir por pantalla el fichero de cada usuario
-        try {
-            Metodos.mostrarContenido();
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        }
+        // Imprimimos por pantalla el documento de cada usuario
+        Metodos.mostrarContenido(ruta,nUsuarios,nombreUsuarios);
     }
 }

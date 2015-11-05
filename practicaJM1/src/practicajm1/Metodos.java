@@ -1,12 +1,11 @@
 package practicajm1;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,88 +18,67 @@ public class Metodos {
      * Lanza un proceso hijo que recorre la ubicacion donde se encuentran los
      * usuarios y almacena los nombres en un fichero de texto
      */
-    public static void leerUsuarios() throws InterruptedException, IOException {
+    public static void leerUsuarios(String ruta) throws InterruptedException, IOException {
 
         // Declaramos el proceso con el comando a ejecutar
-        ProcessBuilder pb = new ProcessBuilder("CMD", "/C", "dir /b C:\\Users\\Alumnot\\Documents\\Usuarios");
+        ProcessBuilder pb = new ProcessBuilder("CMD", "/C", "dir /b " + ruta);
 
-        pb.redirectOutput(new File("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt")); // Ubicacion de destino del resultado del comando
+        pb.redirectOutput(new File(ruta + "usuarios.txt")); // Ubicacion de destino del resultado del comando
 
         Process p = pb.start(); // Lanza el proceso
         p.waitFor(); // Espera a que acabe
     }
 
     /**
-     * Metodo para contar los usuarios
+     * Metodo para almacenar en un ArrayList los nombres de usuario
      *
-     * @return Numero de usuarios
+     * @param ruta Directorio donde estan las carpetas de usuario
+     * @param nombres ArrayList donde se almacenaran los nombres de usuario
+     * @throws IOException
      */
-    public static int contarUsuarios() throws FileNotFoundException, IOException {
-        // Abrimos el fichero creado anteriormente
-        BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
+    public static void cogerNombres(String ruta, ArrayList<String> nombres) throws IOException {
+        // Abrimos el documento con los nombres de usuario
+        BufferedReader leer = new BufferedReader(new FileReader(ruta + "usuarios.txt"));
         // Variable donde se almacenara cada linea del fichero
-        String linea = null;
-        // Contador de usuarios
-        int count = 1;
+        String linea;
 
-        // Si hay un registro de un archivo, que lleve un punto y una extension, la ignoramos
+        // Recorremos el documento
         while ((linea = leer.readLine()) != null) {
+            // Filtramos el contenido para solo sacar carpetas
             if (!(linea.indexOf('.') >= 0)) {
-                count++;
+                // Agregamos al ArrayList el nombre de usuario
+                nombres.add(linea);
             }
         }
-        leer.close(); // Cerramos el fichero
-
-        return count;
-    }
-    
-    public static void limpiarFicheros() throws FileNotFoundException, IOException {
-        String contenido = null;
-        BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
-        String user = null;
-
-        while ((user = leer.readLine()) != null) {
-            if (!(user.indexOf('.') >= 0)) {
-                BufferedReader carpetaUsuario = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user + ".txt"));
-                String linea = null;
-
-                System.out.println("El Usuario " + user + " contiene en su carpeta los siguientes archivos:");
-                while ((linea = carpetaUsuario.readLine()) != null) {
-                    linea.replace("C:\\Users\\Alumnot\\Documents\\Usuarios\\", "");
-                    contenido += linea + "\n";
-                }
-                carpetaUsuario.close();
-                BufferedWriter ficheroUsuario = new BufferedWriter(new FileWriter("C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user + ".txt"));
-                ficheroUsuario.write(contenido);
-                ficheroUsuario.close();
-                contenido = null;
-            }
-        }
+        // Cerramos el documento
         leer.close();
     }
 
     /**
      * Metodo para leer el contenido de los ficheros de cada usuario
      *
+     * @param ruta Directorio de las carpetas de usuario
+     * @param nUsuarios Numero de usuarios
+     * @param user ArrayList que contiene los nombres de usuario
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static void mostrarContenido() throws FileNotFoundException, IOException {
-        BufferedReader leer = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\usuarios.txt"));
-        String user = null;
+    public static void mostrarContenido(String ruta, int nUsuarios, ArrayList<String> user) throws FileNotFoundException, IOException {
 
-        while ((user = leer.readLine()) != null) {
-            if (!(user.indexOf('.') >= 0)) {
-                BufferedReader carpetaUsuario = new BufferedReader(new FileReader("C:\\Users\\Alumnot\\Documents\\Usuarios\\" + user + ".txt"));
-                String linea = null;
+        for (int i = 0; i < nUsuarios; i++) {
+            // Abrimos el documento de cada usuario
+            BufferedReader carpetaUsuario = new BufferedReader(new FileReader(ruta + user.get(i) + ".txt"));
+            // Variable para almacenar cada linea del documento
+            String linea;
 
-                System.out.println("El Usuario " + user + " contiene en su carpeta los siguientes archivos:");
-                while ((linea = carpetaUsuario.readLine()) != null) {
-                    System.out.println(linea);
-                }
-                carpetaUsuario.close();
+            System.out.println("El Usuario " + user.get(i) + " contiene en su carpeta los siguientes archivos:");
+            // Recorremos el documento
+            while ((linea = carpetaUsuario.readLine()) != null) {
+                // Imprimimos cada linea
+                System.out.println(linea);
             }
+            // Cerramos el documento
+            carpetaUsuario.close();
         }
-        leer.close();
     }
 }
