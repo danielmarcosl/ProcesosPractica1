@@ -7,14 +7,14 @@ import java.util.ArrayList;
 /**
  *
  * @author Daniel Marcos, Alvaro Gomez
- * @version 1.2 14/10/2015
+ * @version 1.3 05/11/2015
  */
 public class PracticaJM1 {
 
     // Variable global con el numero de usuarios
     static int nUsuarios = 0;
     // Ruta donde esta ubicada la carpeta que contiene los usuarios
-    static String ruta = "D:\\Libraries\\Documents\\Usuarios\\";
+    static String ruta = "C:\\Users\\Alumnot\\Documents\\Usuarios\\";
     // ArrayList que contendra los nombres de usuario
     static ArrayList<String> nombreUsuarios = new ArrayList<String>();
 
